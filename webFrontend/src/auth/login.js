@@ -9,23 +9,27 @@ form.addEventListener('submit', async(e)=>{
     const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        credentials: 'include',
+        body: JSON.stringify({ username: username, password: password })
     }
     try{
         const response = await fetch(url, options);
-        const result = await response.text();
-        if(response.status == 200){
+        if (response.ok) {
+            const result = await response.json();
+            console.log(result);
+            localStorage.setItem('authToken', result.token);
             messageEl.textContent = 'Login successful, redirecting...';
             messageEl.style.color = 'green';
-            setTimeout(() => { window.location.href = '/index.html'; }, 2500)
+            setTimeout(() => { window.location.href = '/index.html'; }, 1000)  
         } else {
-            const result = await response.json();
-                messageEl.textContent = result.message || 'Login failed. Check credentials.';
-                messageEl.style.color = 'red';
+            const errorResult = await response.json(); 
+            messageEl.textContent = errorResult.error || 'Login failed. Check credentials.';
             messageEl.style.color = 'red';
         }
     } catch (error) {
-        messageEl.textContent = 'Network error or connection failed.';
+        console.error('Fetch error:', error);
+        // Handle cases where the network fails or JSON parsing fails
+        messageEl.textContent = 'Network error or connection failed. See console for details.';
         messageEl.style.color = 'red';
     }
 })

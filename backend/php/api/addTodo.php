@@ -1,11 +1,15 @@
 <?php
 session_set_cookie_params([
+    'secure' => true,        // required if SameSite=None
     'samesite' => 'None',
-    'secure' => true, // ⚠️ SameSite=None requires the Secure attribute
+    'httponly' => true,
 ]);
-header("Access-Control-Allow-Origin: *");
+session_start();
+
+header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header('Access-Control-Allow-Credentials: true');
 
 session_start(); 
 

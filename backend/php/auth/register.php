@@ -1,12 +1,9 @@
 <?php
-session_set_cookie_params([
-    'samesite' => 'None',
-    'secure' => true, // ⚠️ SameSite=None requires the Secure attribute
-]);
-
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header('Access-Control-Allow-Credentials: true');
+
 require_once '../connect.php';
 
 $json_data = file_get_contents('php://input');
