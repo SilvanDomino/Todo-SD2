@@ -8,10 +8,26 @@ html{
 }
 body{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #222;
   color: #eee;
+}
+header{
+  padding: 5px;
+  display: grid;
+  
+  grid-template-columns: repeat(3, 100px);
+  a{
+    padding: 10px;
+    border: 1px solid #555;
+    color: white;
+    text-decoration: none;
+  }
+  a:hover{
+    border: 1px solid #444;
+  }
 }
 main{
   padding: 40px;
@@ -33,6 +49,7 @@ li{
 }
 li:hover{
   background-color: hsl(300, 100%, 25%);
+  cursor: pointer;
 }
 .todo{
 

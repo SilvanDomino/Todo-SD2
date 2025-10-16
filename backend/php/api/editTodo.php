@@ -1,8 +1,19 @@
 <?php
-
+session_set_cookie_params([
+    'samesite' => 'None',
+    'secure' => true, // ⚠️ SameSite=None requires the Secure attribute
+]);
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS, PATCH");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+session_start(); 
+
+// --- AUTHENTICATION CHECK ---
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    http_response_code(401); // Unauthorized
+    exit(json_encode(["error" => "You must be logged in to do that."]));
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);

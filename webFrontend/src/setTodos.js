@@ -1,5 +1,9 @@
 
 async function getAndMakeTodos(){
+    const options = {
+        method: "GET",
+        credentials: 'include'
+    }
     let url = "http://localhost:8080/api/getTodos.php";
     let response  = await fetch(url);
     let todosJson = await response.json();
@@ -17,6 +21,7 @@ function makeTodo(data){
         let url = "http://localhost:8080/api/edittodo.php";
         let options = {
             method: "PATCH",
+            credentials: 'include',
             headers: {
                 "Content-Type": "application/json" 
             },

@@ -5,6 +5,7 @@ export async function addTodo(){
     let url = "http://localhost:8080/api/addtodo.php";
     let options = {
         method: "POST",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json" 
         },
