@@ -1,25 +1,27 @@
 <?php
-session_set_cookie_params([
-    'secure' => true,        // required if SameSite=None
-    'samesite' => 'None',
-    'httponly' => true,
-]);
-session_start();
-
 header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header('Access-Control-Allow-Credentials: true');
-
-session_start(); 
-
-// --- AUTHENTICATION CHECK ---
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    http_response_code(401); // Unauthorized
-    exit(json_encode(["error" => "You must be logged in to do that."]));
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
 }
 
 require_once '../connect.php';
+
+$headers = getallheaders();
+$auth_header = $headers['Authorization'] ?? $headers['authorization'] ?? '';
+
+$token = null;
+// Expecting "Bearer <token>"
+if (preg_match('/Bearer\s(\S+)/', $auth_header, $matches)) {
+    $token = $matches[1];
+}
+if (!$token) {
+    http_response_code(401); // Unauthorized
+    exit("Token is missing or invalid in Authorization header.");
+}
 
 $json_data = file_get_contents('php://input');
 $data = json_decode($json_data, true);
